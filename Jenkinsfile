@@ -15,19 +15,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Lint') {
             steps {
-                sh 'npm run lint'
+                bat 'npm run lint'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test -- --coverage'
+                bat 'npm test -- --coverage'
                 junit 'test-results/**/*.xml' // Adjust path as needed
                 publishHTML(target: [
                     reportName: 'Coverage Report',
@@ -58,7 +58,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl apply -f k8s/deployment.yaml'
+                    bat 'kubectl apply -f k8s/deployment.yaml'
                 }
             }
         }
